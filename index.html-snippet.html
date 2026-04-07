@@ -1,0 +1,43 @@
+<!-- Add this to apps/stage-web/index.html (before </head>) -->
+<!-- This auto-configures OpenClaw-CN Providers on first visit -->
+
+<script>
+  (function() {
+    var CHAT_PROVIDER_ID = 'openclaw-cn';
+    var CHAT_BRIDGE_URL = 'http://localhost:3003';
+    var SPEECH_PROVIDER_ID = 'openclaw-cn-speech';
+    var SPEECH_BRIDGE_URL = 'http://localhost:5007';
+    try {
+      var addedProviders = JSON.parse(localStorage.getItem('settings/providers/added') || '{}');
+      var credentials = JSON.parse(localStorage.getItem('settings/credentials/providers') || '{}');
+      if (!addedProviders[CHAT_PROVIDER_ID]) {
+        addedProviders[CHAT_PROVIDER_ID] = true;
+      }
+      if (!credentials[CHAT_PROVIDER_ID]) {
+        credentials[CHAT_PROVIDER_ID] = {
+          apiKey: 'openclaw-token',
+          bridgeUrl: CHAT_BRIDGE_URL
+        };
+      }
+      if (!addedProviders[SPEECH_PROVIDER_ID]) {
+        addedProviders[SPEECH_PROVIDER_ID] = true;
+      }
+      if (!credentials[SPEECH_PROVIDER_ID]) {
+        credentials[SPEECH_PROVIDER_ID] = {
+          apiKey: 'openclaw-token',
+          bridgeUrl: SPEECH_BRIDGE_URL
+        };
+      }
+      localStorage.setItem('settings/providers/added', JSON.stringify(addedProviders));
+      localStorage.setItem('settings/credentials/providers', JSON.stringify(credentials));
+    } catch (e) {
+      console.error('[AIRI] OpenClaw Provider config error:', e);
+    }
+  })();
+</script>
+<style>
+  .provider-openclaw-cn {
+    color: #ef4444 !important;
+    font-weight: 600;
+  }
+</style>
